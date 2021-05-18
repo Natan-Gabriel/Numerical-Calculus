@@ -1,5 +1,5 @@
 function res = doolittle(n,A)
-  all_mk = cell(n,1);
+  all_mk = cell(n-1,1);
   
   % compute M_1
   tk = [];
@@ -14,7 +14,9 @@ function res = doolittle(n,A)
 
   I_n = eye(n);
   mk = eye(n) - tk*(I_n(k,:));
+  %tk
   all_mk{k} = mk;
+  product_mk{k} = mk*A;
   
   for k=2:n-1
     tk = [];
@@ -22,13 +24,15 @@ function res = doolittle(n,A)
       tk=[tk;0];
     endfor
     for i = k+1:n
-      l = all_mk{k-1}(i,k)/all_mk{k-1}(k,k);
+      l = product_mk{k-1}(i,k)/product_mk{k-1}(k,k);
       tk=[tk;l];
     endfor
     
     I_n = eye(n);
     mk = eye(n) - tk*(I_n(k,:));
+    %tk
     all_mk{k} = mk;
+    product_mk{k} = mk * product_mk{k-1};
   endfor
   
   U = A;
